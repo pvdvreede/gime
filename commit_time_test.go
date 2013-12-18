@@ -31,6 +31,10 @@ func Test_CommitTime_Time(t *testing.T) {
 		So(run("I have tried this 10 times!").Time(), ShouldEqual, 0)
 	})
 
+	Convey("It returns 1 for when 1hr is used instead of the plural.", t, func() {
+		So(run("This took a whole hour, 1hr.").Time(), ShouldEqual, 1)
+	})
+
 	Convey("It caches the result and will return the same value more than once", t, func() {
 		ct := run("Didnt work to hard, only did 30mins here.")
 		So(ct.Time(), ShouldEqual, 0.5)

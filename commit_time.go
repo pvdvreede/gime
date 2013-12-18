@@ -17,7 +17,7 @@ func NewCommitTime(commit *Commit) *CommitTime {
 // and will convert the number to hours.
 func parseMessageForTime(msg string) float64 {
 
-	reg := regexp.MustCompile(`\s(?P<time>[0-9\.]+)(?P<type>hrs|mins)`)
+	reg := regexp.MustCompile(`\s(?P<time>[0-9\.]+)(?P<type>hrs|mins|hr)`)
 	if !reg.MatchString(msg) {
 		return 0
 	}
@@ -31,7 +31,7 @@ func parseMessageForTime(msg string) float64 {
 	}
 
 	switch matches[2] {
-	case "hrs":
+	case "hrs", "hr":
 		return time
 	case "mins":
 		return time / 60
