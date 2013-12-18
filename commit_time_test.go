@@ -7,7 +7,8 @@ import (
 
 func Test_CommitTime_Time(t *testing.T) {
 	run := func(msg string) *CommitTime {
-		return NewCommitTime(msg)
+		comm := NewCommit("test", msg, "Wed Dec 18 12:13:31 2013 +1100")
+		return NewCommitTime(comm)
 	}
 
 	Convey("It returns 0 when there are no hours in the msg", t, func() {
@@ -24,6 +25,10 @@ func Test_CommitTime_Time(t *testing.T) {
 
 	Convey("It returns 0 when there is 'ADhrs' in the msg", t, func() {
 		So(run("I dont know what I am saying, blah ADhrs.").Time(), ShouldEqual, 0)
+	})
+
+	Convey("It returns 0 for plain numbers without the postfix", t, func() {
+		So(run("I have tried this 10 times!").Time(), ShouldEqual, 0)
 	})
 
 	Convey("It caches the result and will return the same value more than once", t, func() {

@@ -5,27 +5,18 @@ import (
 	"strconv"
 )
 
-func NewCommitTime(message string) *CommitTime {
+func NewCommitTime(commit *Commit) *CommitTime {
 	return &CommitTime{
-		message: message,
-		time:    -1,
+		commit,
+		parseMessageForTime(commit.Message()),
 	}
-}
-
-type CommitTime struct {
-	message string
-	time    float64
 }
 
 // Takes the types commit message and will return the number of hours
 // that have been worked. This allows hrs or mins as the postfix to the amount
 // and will convert the number to hours.
-func (self *CommitTime) Time() float64 {
-	if self.time != -1 {
-		return self.time
-	}
+func parseMessageForTime(msg string) float64 {
 
-	msg := self.message
 	reg := regexp.MustCompile(`\s(?P<time>[0-9\.]+)(?P<type>hrs|mins)`)
 	if !reg.MatchString(msg) {
 		return 0
@@ -48,4 +39,13 @@ func (self *CommitTime) Time() float64 {
 		return 0
 	}
 
+}
+
+type CommitTime struct {
+	*Commit
+	time float64
+}
+
+func (self *CommitTime) Time() float64 {
+	return self.time
 }
